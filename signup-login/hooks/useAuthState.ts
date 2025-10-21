@@ -3,7 +3,7 @@
  * Replaces Bubble's custom states with React state management
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { AuthState } from '../types';
 
 interface UseAuthStateProps {
@@ -17,15 +17,11 @@ interface UseAuthStateProps {
 }
 
 export const useAuthState = (initialProps: UseAuthStateProps = {}) => {
-  // Store initial props in ref to avoid recreating resetState on every render
-  const initialPropsRef = useRef(initialProps);
-
   const [state, setState] = useState<AuthState>({
     showingToggle: 'welcome',
     claimListing: false,
     currentInputFilling: null,
     defaultEmail: initialProps.defaultEmail || '',
-    currentEmail: initialProps.defaultEmail || '',
     disableClose: initialProps.disableClose || false,
     fromTrialHost: initialProps.fromTrialHost || false,
     fromPageType: initialProps.fromPageType || '',
@@ -37,7 +33,6 @@ export const useAuthState = (initialProps: UseAuthStateProps = {}) => {
     signupErrorText: '',
     toggleListingPicture: '',
     userTypeSelection: null,
-    successUser: null,
   });
 
   /**
@@ -64,27 +59,24 @@ export const useAuthState = (initialProps: UseAuthStateProps = {}) => {
    * Equivalent to Bubble's "Reset" action
    */
   const resetState = useCallback(() => {
-    const props = initialPropsRef.current;
     setState({
       showingToggle: 'welcome',
       claimListing: false,
       currentInputFilling: null,
-      defaultEmail: props.defaultEmail || '',
-      currentEmail: props.defaultEmail || '',
-      disableClose: props.disableClose || false,
-      fromTrialHost: props.fromTrialHost || false,
-      fromPageType: props.fromPageType || '',
-      houseManual: props.houseManual || null,
+      defaultEmail: initialProps.defaultEmail || '',
+      disableClose: initialProps.disableClose || false,
+      fromTrialHost: initialProps.fromTrialHost || false,
+      fromPageType: initialProps.fromPageType || '',
+      houseManual: initialProps.houseManual || null,
       lockLogin: false,
-      isNYU: props.isNYU || false,
-      referral: props.referral || null,
+      isNYU: initialProps.isNYU || false,
+      referral: initialProps.referral || null,
       shouldTheUser: false,
       signupErrorText: '',
       toggleListingPicture: '',
       userTypeSelection: null,
-      successUser: null,
     });
-  }, []);
+  }, [initialProps]);
 
   /**
    * Navigate to login view
@@ -121,16 +113,6 @@ export const useAuthState = (initialProps: UseAuthStateProps = {}) => {
     updateState('showingToggle', 'passwordless');
   }, [updateState]);
 
-  /**
-   * Navigate to success view
-   */
-  const showSuccess = useCallback((user: any) => {
-    updateStates({
-      showingToggle: 'success',
-      successUser: user,
-    });
-  }, [updateStates]);
-
   return {
     state,
     updateState,
@@ -141,6 +123,5 @@ export const useAuthState = (initialProps: UseAuthStateProps = {}) => {
     showPasswordReset,
     showWelcome,
     showPasswordless,
-    showSuccess,
   };
 };

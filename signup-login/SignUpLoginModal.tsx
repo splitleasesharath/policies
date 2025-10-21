@@ -11,7 +11,7 @@
  * - State management across different views
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { CloseButton } from './components/shared';
 import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
@@ -63,33 +63,13 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
     clearError,
   } = useAuthFlow();
 
-  // Use refs to avoid infinite loops
-  const resetStateRef = useRef(resetState);
-  const clearErrorRef = useRef(clearError);
-  const onCloseRef = useRef(onClose);
-
-  // Update refs when functions change
-  useEffect(() => {
-    resetStateRef.current = resetState;
-    clearErrorRef.current = clearError;
-    onCloseRef.current = onClose;
-  }, [resetState, clearError, onClose]);
-
-  const handleClose = () => {
-    if (!state.disableClose) {
-      resetStateRef.current();
-      clearErrorRef.current();
-      onCloseRef.current();
-    }
-  };
-
   // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
-      resetStateRef.current();
-      clearErrorRef.current();
+      resetState();
+      clearError();
     }
-  }, [isOpen]);
+  }, [isOpen, resetState, clearError]);
 
   // Handle escape key
   useEffect(() => {
@@ -110,6 +90,14 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
       document.body.style.overflow = '';
     };
   }, [isOpen, state.disableClose]);
+
+  const handleClose = () => {
+    if (!state.disableClose) {
+      resetState();
+      clearError();
+      onClose();
+    }
+  };
 
   // Handle login
   const handleLogin = async (email: string, password: string) => {

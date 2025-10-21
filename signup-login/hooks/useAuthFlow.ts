@@ -153,7 +153,7 @@ export const useAuthFlow = () => {
 
   /**
    * Handle passwordless login (magic link)
-   * Replace with your actual passwordless auth API endpoint
+   * Calls Bubble backend workflow: CORE-generic-magic-login-link
    */
   const passwordlessLogin = useCallback(async (
     email: string
@@ -162,16 +162,21 @@ export const useAuthFlow = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await fetch('/api/auth/passwordless', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        'https://app.split.lease/version-test/api/1.1/wf/CORE-generic-magic-login-link',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer 5dbb448f9a6bbb043cb56ac16b8de109',
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Passwordless login failed');
+        throw new Error(errorData.message || 'Unable to send magic link');
       }
 
       return true;

@@ -1,26 +1,18 @@
 /**
- * Main Sign Up & Login Modal Component
- * Converted from Bubble.io reusable element
- *
- * This is a comprehensive authentication modal that handles:
- * - User login
- * - User signup/registration
- * - Password reset
- * - Passwordless authentication
- * - Referral tracking
- * - State management across different views
+ * Demo wrapper for SignUpLoginModal that uses mock API
  */
 
 import React, { useEffect, useRef } from 'react';
-import { CloseButton } from './components/shared';
-import { WelcomeView } from './components/WelcomeView';
-import { LoginView } from './components/LoginView';
-import { SignupView } from './components/SignupView';
-import { PasswordResetView } from './components/PasswordResetView';
-import { useAuthState } from './hooks/useAuthState';
-import { useAuthFlow } from './hooks/useAuthFlow';
-import { SignUpLoginModalProps } from './types';
-import * as S from './SignUpLoginModal.styles';
+import { CloseButton } from '../components/shared';
+import { WelcomeView } from '../components/WelcomeView';
+import { LoginView } from '../components/LoginView';
+import { SignupView } from '../components/SignupView';
+import { PasswordResetView } from '../components/PasswordResetView';
+import { SuccessView } from '../components/SuccessView';
+import { useAuthState } from '../hooks/useAuthState';
+import { useAuthFlow } from '../hooks/useAuthFlow';
+import { SignUpLoginModalProps } from '../types';
+import * as S from '../SignUpLoginModal.styles';
 
 export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
   isOpen,
@@ -36,13 +28,14 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
 }) => {
   const {
     state,
-    updateState,
     resetState,
+    updateState,
     showLogin,
     showSignup,
     showPasswordReset,
     showWelcome,
     showPasswordless,
+    showSuccess,
   } = useAuthState({
     defaultEmail,
     fromPageType,
@@ -83,7 +76,6 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
     }
   };
 
-  // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
       resetStateRef.current();
@@ -91,7 +83,6 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
     }
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen && !state.disableClose) {
@@ -101,7 +92,6 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
     }
 
@@ -111,37 +101,44 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
     };
   }, [isOpen, state.disableClose]);
 
-  // Handle login
   const handleLogin = async (email: string, password: string) => {
     const user = await login({ email, password });
     if (user) {
-      onAuthSuccess?.(user);
-      handleClose();
+      // Show success screen
+      showSuccess(user);
+
+      // Auto-close after 2 seconds
+      setTimeout(() => {
+        onAuthSuccess?.(user);
+        handleClose();
+      }, 2000);
     }
     return user;
   };
 
-  // Handle signup
   const handleSignup = async (data: any) => {
     const user = await signup(data);
     if (user) {
-      onAuthSuccess?.(user);
-      handleClose();
+      // Show success screen
+      showSuccess(user);
+
+      // Auto-close after 2 seconds
+      setTimeout(() => {
+        onAuthSuccess?.(user);
+        handleClose();
+      }, 2000);
     }
     return user;
   };
 
-  // Handle password reset
   const handlePasswordReset = async (email: string) => {
     return await resetPassword({ email });
   };
 
-  // Handle passwordless login
   const handlePasswordless = async (email: string) => {
     return await passwordlessLogin(email);
   };
 
-  // Render current view based on state
   const renderContent = () => {
     switch (state.showingToggle) {
       case 'welcome':
@@ -150,7 +147,6 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
             onSelectLogin={showLogin}
             onSelectSignup={showSignup}
             onSelectMarketReport={() => {
-              // Handle market report flow
               console.log('Market report requested');
             }}
             referral={state.referral}
@@ -160,13 +156,14 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
       case 'login':
         return (
           <LoginView
-            defaultEmail={state.defaultEmail}
+            defaultEmail={state.currentEmail}
             onSuccess={onAuthSuccess}
             onSwitchToSignup={showSignup}
             onForgotPassword={showPasswordReset}
-            onPasswordless={showPasswordless}
+            onPasswordless={handlePasswordless}
             onGoBack={showWelcome}
             onLogin={handleLogin}
+            onEmailChange={(email) => updateState('currentEmail', email)}
             loading={loading}
             error={error}
           />
@@ -175,7 +172,7 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
       case 'signup':
         return (
           <SignupView
-            defaultEmail={state.defaultEmail}
+            defaultEmail={state.currentEmail}
             referral={state.referral}
             onSuccess={onAuthSuccess}
             onSwitchToLogin={showLogin}
@@ -189,7 +186,7 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
       case 'reset':
         return (
           <PasswordResetView
-            defaultEmail={state.defaultEmail}
+            defaultEmail={state.currentEmail}
             onBack={showLogin}
             onSuccess={showLogin}
             onResetPassword={handlePasswordReset}
@@ -199,13 +196,20 @@ export const SignUpLoginModal: React.FC<SignUpLoginModalProps> = ({
         );
 
       case 'passwordless':
-        // TODO: Implement passwordless view
         return (
           <div>
             <h2>Passwordless Login</h2>
             <p>Coming soon...</p>
             <button onClick={showLogin}>Back to Login</button>
           </div>
+        );
+
+      case 'success':
+        return (
+          <SuccessView
+            message="Account created successfully!"
+            userName={state.successUser?.firstName}
+          />
         );
 
       default:

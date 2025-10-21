@@ -1,8 +1,8 @@
 {
-  "name": "reservation-price-breakdown",
+  "name": "split-lease-components",
   "version": "1.0.0",
   "type": "module",
-  "description": "React component for displaying reservation price breakdowns - converted from Bubble.io",
+  "description": "React component library for Split Lease - converted from Bubble.io. Includes authentication, reservations, and scheduling components.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,9 +13,14 @@
   "keywords": [
     "react",
     "typescript",
+    "authentication",
     "reservation",
     "price-breakdown",
-    "bubble-conversion"
+    "modal",
+    "login",
+    "signup",
+    "bubble-conversion",
+    "split-lease"
   ],
   "author": "Split Lease",
   "license": "MIT",

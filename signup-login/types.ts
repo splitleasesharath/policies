@@ -28,15 +28,13 @@ export interface SignUpLoginModalProps {
 
 export interface AuthState {
   /** Current view being displayed */
-  showingToggle: 'login' | 'signup' | 'reset' | 'welcome' | 'passwordless' | 'success';
+  showingToggle: 'login' | 'signup' | 'reset' | 'welcome' | 'passwordless';
   /** Controls listing claim flow */
   claimListing: boolean;
   /** Tracks which input field is active */
   currentInputFilling: number | null;
   /** Pre-filled email value */
   defaultEmail: string;
-  /** Current email being used across views */
-  currentEmail: string;
   /** Controls whether close button is disabled */
   disableClose: boolean;
   /** Indicates if user is from trial host flow */
@@ -59,8 +57,6 @@ export interface AuthState {
   toggleListingPicture: string;
   /** Selected user type */
   userTypeSelection: UserType | null;
-  /** Success user data */
-  successUser: User | null;
 }
 
 export interface HouseManual {
@@ -106,9 +102,9 @@ export interface SignupFormData {
   confirmPassword: string;
   firstName: string;
   lastName: string;
-  birthDate?: string; // Date string in format YYYY-MM-DD
-  phoneNumber?: string;
-  accountType?: 'guest' | 'host'; // User type: guest or host
+  birthDate: string; // Format: YYYY-MM-DD
+  phoneNumber: string;
+  accountType: 'guest' | 'host';
   referralCode?: string;
 }
 

@@ -1,368 +1,229 @@
-# Reservation Price Breakdown Component
+# Split Lease Policies Page
 
-A modern React component converted from Bubble.io's **♻️💥reservation price breakdown** reusable element.
+A standalone, lightweight policies page converted from Bubble to pure HTML/CSS/JavaScript.
 
-## 🚀 Quick Start
-
-```typescript
-import { ReservationPriceBreakdown } from './components/ReservationPriceBreakdown';
-
-function App() {
-  return (
-    <ReservationPriceBreakdown
-      proposal={proposalData}
-      mode="proposal"
-      onMoveInClick={() => console.log('Edit date')}
-      onHouseRulesClick={() => console.log('View rules')}
-    />
-  );
-}
-```
-
-## 📁 Project Structure
+## 📁 File Structure
 
 ```
-SL16/
-├── components/
-│   └── ReservationPriceBreakdown/
-│       ├── ReservationPriceBreakdown.tsx          # Main component (Styled Components)
-│       ├── ReservationPriceBreakdown.styles.ts    # Styled Components styles
-│       ├── ReservationPriceBreakdown.tailwind.tsx # Tailwind CSS alternative
-│       └── index.ts                                # Barrel exports
-├── types/
-│   └── proposal.ts                                 # TypeScript type definitions
-├── examples/
-│   └── ProposalPage.tsx                           # Usage examples
-├── docs/
-│   └── CONVERSION_GUIDE.md                        # Comprehensive conversion guide
-└── README.md                                       # This file
+policies-page/
+├── index.html              # Main HTML file
+├── css/
+│   ├── variables.css       # CSS custom properties and design tokens
+│   ├── layout.css          # Layout and responsive styles
+│   └── components.css      # Component-specific styles
+├── js/
+│   ├── policies-data.js    # Policy documents database
+│   └── main.js             # Main JavaScript functionality
+├── fonts/                  # Custom fonts (optional)
+├── pdfs/                   # PDF documents storage
+└── README.md               # This file
 ```
 
-## ✨ Features
+## 🚀 Features
 
-- ✅ **Full TypeScript Support** - Comprehensive type definitions
-- ✅ **Two Styling Options** - Choose between Styled Components or Tailwind CSS
-- ✅ **Responsive Design** - Mobile-first, works on all screen sizes
-- ✅ **Accessible** - WCAG 2.1 AA compliant
-- ✅ **Modern React** - Built with hooks (useState, useMemo)
-- ✅ **Date Formatting** - Uses date-fns for reliable date handling
-- ✅ **Customizable** - Easy to extend and customize
+- **Dynamic Policy Loading**: Policies are loaded dynamically from a JavaScript data file
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Smooth Navigation**: Hash-based routing with browser back/forward support
+- **PDF Viewer**: Embedded PDF viewer with download capability
+- **Sticky Sidebar**: Contents sidebar stays visible while scrolling (desktop)
+- **Back to Top**: Smooth scroll to top functionality
+- **SEO Friendly**: Clean URLs with hash navigation
 
-## 📦 Installation
+## 📋 Setup Instructions
 
-### 1. Install Dependencies
+### 1. Add Your PDF Files
+
+Place your actual PDF policy documents in the `pdfs/` folder:
+
+```
+pdfs/
+├── background-check-consent.pdf
+├── cancellation-refund-policy.pdf
+├── community-guidelines.pdf
+├── cookie-policy.pdf
+├── fees-overview.pdf
+├── host-guarantee.pdf
+├── host-guarantee-terms.pdf
+├── payments-terms.pdf
+├── privacy-policy.pdf
+└── terms-of-use.pdf
+```
+
+### 2. Update Policy Data
+
+Edit `js/policies-data.js` to match your actual PDF files and policy names.
+
+### 3. Customize Branding
+
+Update the following in `index.html`:
+- Logo URL in the header
+- Company name
+- Footer links and content
+
+### 4. Configure Colors
+
+Modify `css/variables.css` to match your brand colors:
+- `--purple-dark`: Primary dark color
+- `--purple-main`: Main brand color
+- `--purple-light`: Light accent color
+
+### 5. Test Locally
+
+Open `index.html` in a web browser to test. For full functionality, use a local server:
 
 ```bash
-# Required
-npm install react react-dom date-fns
+# Using Python
+python -m http.server 8000
 
-# For Styled Components version
-npm install styled-components
-npm install -D @types/styled-components
+# Using Node.js
+npx http-server
 
-# For Tailwind CSS version (if not already installed)
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+# Using PHP
+php -S localhost:8000
 ```
 
-### 2. Copy Files
+Then visit: `http://localhost:8000`
 
-Copy the component files to your project:
+## 🎨 Customization Guide
 
-```bash
-cp -r components/ReservationPriceBreakdown src/components/
-cp types/proposal.ts src/types/
-```
+### Adding New Policies
 
-### 3. Import and Use
+1. Add the PDF file to the `pdfs/` folder
+2. Add a new entry to `POLICIES_DATA` in `js/policies-data.js`:
 
-```typescript
-// Using Styled Components version
-import { ReservationPriceBreakdown } from '@/components/ReservationPriceBreakdown';
-
-// OR using Tailwind CSS version
-import { ReservationPriceBreakdownTailwind } from '@/components/ReservationPriceBreakdown';
-```
-
-## 🎯 Usage Examples
-
-### Basic Example
-
-```typescript
-import React from 'react';
-import { ReservationPriceBreakdown } from './components/ReservationPriceBreakdown';
-import { Proposal } from './types/proposal';
-
-const MyComponent = () => {
-  const proposal: Proposal = {
-    id: 'prop-123',
-    moveInDate: new Date('2025-11-01'),
-    checkInDay: 'Saturday',
-    checkOutDay: 'Friday',
-    reservationLength: 28,
-    weeklyPattern: 'Mon-Thu',
-    actualWeeksUsed: 4,
-    compensationPerNight: 45.50,
-    pricePerNight: 85.00,
-    nightsReserved: 16,
-    totalCompensation: 728.00,
-    totalPrice: 1360.00,
-    compensationPer4Weeks: 728.00,
-    pricePer4Weeks: 1360.00,
-    damageDeposit: 500.00,
-    maintenanceFee: 150.00,
-    host: {
-      id: 'host-123',
-      name: 'John Doe',
-      email: 'john@example.com'
-    }
-  };
-
-  return (
-    <ReservationPriceBreakdown
-      proposal={proposal}
-      mode="proposal"
-      onMoveInClick={() => alert('Edit move-in date')}
-      onHouseRulesClick={() => alert('View house rules')}
-    />
-  );
-};
-```
-
-### With API Data
-
-```typescript
-import { useState, useEffect } from 'react';
-import { ReservationPriceBreakdown } from './components/ReservationPriceBreakdown';
-import { Proposal } from './types/proposal';
-
-const ProposalPage = ({ proposalId }: { proposalId: string }) => {
-  const [proposal, setProposal] = useState<Proposal | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`/api/proposals/${proposalId}`)
-      .then(res => res.json())
-      .then(data => {
-        setProposal(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to load proposal:', err);
-        setLoading(false);
-      });
-  }, [proposalId]);
-
-  if (loading) return <div>Loading...</div>;
-  if (!proposal) return <div>Proposal not found</div>;
-
-  return (
-    <ReservationPriceBreakdown
-      proposal={proposal}
-      onMoveInClick={() => {/* handle click */}}
-      onHouseRulesClick={() => {/* handle click */}}
-    />
-  );
-};
-```
-
-### Preview Mode
-
-```typescript
-<ReservationPriceBreakdown
-  mode="preview"
-  onMoveInClick={() => console.log('Configure move-in date')}
-  onHouseRulesClick={() => console.log('Set house rules')}
-/>
-```
-
-## 🔧 Component API
-
-### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `proposal` | `Proposal \| undefined` | `undefined` | The proposal data to display |
-| `mode` | `'preview' \| 'proposal'` | `'proposal'` | Display mode |
-| `onMoveInClick` | `() => void` | `undefined` | Callback when move-in date is clicked |
-| `onHouseRulesClick` | `() => void` | `undefined` | Callback when house rules link is clicked |
-
-### Proposal Interface
-
-```typescript
-interface Proposal {
-  id: string;
-  moveInDate: Date;
-  checkInDay: string;
-  checkOutDay: string;
-  reservationLength: number;
-  weeklyPattern: string;
-  actualWeeksUsed: number;
-  compensationPerNight: number;
-  pricePerNight: number;
-  nightsReserved: number;
-  totalCompensation: number;
-  totalPrice: number;
-  compensationPer4Weeks: number;
-  pricePer4Weeks: number;
-  damageDeposit: number;
-  maintenanceFee: number;
-  houseRules?: string;
-  host: User;
-  cleaningFee?: number;
-}
-```
-
-## 🎨 Customization
-
-### Styling with Styled Components
-
-Edit `ReservationPriceBreakdown.styles.ts` to customize the appearance:
-
-```typescript
-export const Container = styled.div`
-  background-color: #DFDFF6; // Change background color
-  border: 1px solid #68B6B;  // Change border
-  border-radius: 3px;         // Change border radius
-  // ... more styles
-`;
-```
-
-### Styling with Tailwind CSS
-
-Use the Tailwind version and modify classes directly in the component:
-
-```typescript
-<div className="bg-purple-100 border border-blue-300 rounded-lg p-6">
-  {/* Component content */}
-</div>
-```
-
-### Adding Dark Mode
-
-```typescript
-// In styled components
-background-color: ${props => props.theme.mode === 'dark' ? '#2d3748' : '#DFDFF6'};
-
-// Or in Tailwind
-<div className="bg-purple-100 dark:bg-gray-800">
-```
-
-## 📚 Documentation
-
-For detailed conversion documentation and migration guide, see:
-- **[CONVERSION_GUIDE.md](./docs/CONVERSION_GUIDE.md)** - Comprehensive guide for converting from Bubble.io
-
-## 🧪 Testing
-
-### Component Tests
-
-```bash
-# Install testing dependencies
-npm install -D @testing-library/react @testing-library/jest-dom vitest
-
-# Run tests
-npm test
-```
-
-Example test:
-
-```typescript
-import { render, screen } from '@testing-library/react';
-import { ReservationPriceBreakdown } from './ReservationPriceBreakdown';
-
-test('renders proposal details', () => {
-  const proposal = { /* ... proposal data */ };
-
-  render(<ReservationPriceBreakdown proposal={proposal} />);
-
-  expect(screen.getByText('Proposal Details')).toBeInTheDocument();
-  expect(screen.getByText(/Move-in/i)).toBeInTheDocument();
-});
-```
-
-## 🐛 Troubleshooting
-
-### Date Formatting Issues
-
-Ensure dates are Date objects:
-```typescript
-const moveInDate = new Date(proposal.moveInDate);
-```
-
-### Styled Components Not Working
-
-Install babel plugin:
-```bash
-npm install -D babel-plugin-styled-components
-```
-
-### Tailwind Classes Not Applying
-
-Update `tailwind.config.js`:
 ```javascript
-module.exports = {
-  content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-  ],
+{
+  id: 11,
+  name: "New Policy Name",
+  slug: "new-policy-slug",
+  type: "new-policy",
+  pdfUrl: "pdfs/new-policy.pdf",
+  visible_on_policies_page: true,
+  visible_on_logged_out: true,
+  displayOrder: 11,
+  lastUpdated: "2024-02-01"
 }
 ```
 
-## 📝 Migration from Bubble.io
+### Changing Layout
 
-### Key Differences
+Edit `css/layout.css` to adjust:
+- Container widths (`--container-width`)
+- Sidebar width (`--sidebar-width`)
+- Spacing and padding
+- Responsive breakpoints
 
-| Bubble | React |
-|--------|-------|
-| Custom States | useState hooks |
-| Dynamic Expressions | useMemo hooks |
-| Workflows | Event handlers |
-| Data Types | TypeScript interfaces |
+### Updating Colors
 
-### Migration Steps
+All colors are defined in `css/variables.css` as CSS custom properties. Update them to match your brand.
 
-1. ✅ Map Bubble data types to TypeScript interfaces
-2. ✅ Convert custom states to React state
-3. ✅ Transform dynamic expressions to computed values
-4. ✅ Implement event handlers for workflows
-5. ✅ Replicate visual styling
-6. ✅ Test with real data
+## 🔗 URL Structure
 
-See [CONVERSION_GUIDE.md](./docs/CONVERSION_GUIDE.md) for detailed instructions.
+The page uses hash-based routing:
 
-## 🚀 Future Enhancements
+```
+/policies-page/index.html#cancellation-and-refund-policy
+/policies-page/index.html#privacy-policy
+/policies-page/index.html#terms-of-use
+```
 
-- [ ] Add loading skeleton states
-- [ ] Implement error boundaries
-- [ ] Add dark mode support
-- [ ] Add animation with Framer Motion
-- [ ] Create Storybook documentation
-- [ ] Add comprehensive test coverage
-- [ ] Internationalization (i18n) support
-- [ ] Print-friendly styling
+Benefits:
+- Works without server-side routing
+- Browser back/forward support
+- Shareable links to specific policies
+- No page reloads
+
+## 📱 Responsive Breakpoints
+
+- **Desktop**: 900px and above (sidebar + content side-by-side)
+- **Tablet**: 768px - 900px (stacked layout)
+- **Mobile**: Below 768px (simplified navigation)
+
+## 🌐 Browser Support
+
+- Chrome/Edge: ✅ Full support
+- Firefox: ✅ Full support
+- Safari: ✅ Full support
+- Mobile browsers: ✅ Full support
+
+## 🔧 Integration Options
+
+### Option 1: Standalone Page
+Host this as a separate page on your domain: `yoursite.com/policies/`
+
+### Option 2: Integrate with Existing Site
+Copy the content section and CSS into your existing layout.
+
+### Option 3: API-Driven Version
+Replace `policies-data.js` with API calls to fetch policies from a backend:
+
+```javascript
+async function getAllPolicies() {
+  const response = await fetch('/api/policies');
+  return await response.json();
+}
+```
+
+## 📊 Performance
+
+- **Page Size**: ~50-100KB (without PDFs)
+- **Load Time**: <1 second
+- **No Dependencies**: Pure vanilla JavaScript
+- **PDF Lazy Loading**: PDFs only load when selected
+
+## 🔐 Security Considerations
+
+1. **PDF Storage**: Store PDFs on a secure CDN
+2. **Access Control**: Add authentication if needed
+3. **CORS**: Configure proper CORS headers for PDF embedding
+4. **XSS Protection**: All content is safely escaped
+
+## 🚀 Deployment
+
+### GitHub Pages
+1. Push to GitHub repository
+2. Enable GitHub Pages in settings
+3. Access at: `username.github.io/policies-page`
+
+### Netlify/Vercel
+1. Connect repository
+2. Deploy (no build step needed)
+3. Custom domain optional
+
+### Traditional Hosting
+1. Upload entire `policies-page/` folder via FTP
+2. Access at: `yoursite.com/policies-page/`
+
+## 📝 Notes
+
+- Replace placeholder PDF URLs with actual CDN/server URLs
+- Consider adding a search functionality for large policy collections
+- Add analytics tracking if needed
+- Test PDF rendering across different browsers
+- Consider using PDF.js for better cross-browser compatibility
+
+## 🆘 Troubleshooting
+
+### PDFs Not Loading
+- Check file paths in `policies-data.js`
+- Ensure PDFs are in the correct folder
+- Check browser console for errors
+- Verify CORS headers if loading from external CDN
+
+### Styling Issues
+- Clear browser cache
+- Check CSS file paths in `index.html`
+- Verify CSS custom properties are supported
+
+### Navigation Not Working
+- Check JavaScript console for errors
+- Ensure both JS files are loaded
+- Verify hash URLs are correct
 
 ## 📄 License
 
-This component is part of the Split Lease project.
+This is a custom implementation for Split Lease. Modify as needed for your use case.
 
-## 🤝 Contributing
+## 🤝 Support
 
-Contributions are welcome! Please ensure:
-- TypeScript types are properly defined
-- Component is tested
-- Documentation is updated
-- Code follows project conventions
-
-## 📞 Support
-
-For issues or questions:
-- Check the [CONVERSION_GUIDE.md](./docs/CONVERSION_GUIDE.md)
-- Review the [examples](./examples/)
-- Open an issue in the project repository
-
----
-
-**Converted from Bubble.io:** ♻️💥reservation price breakdown
-**Conversion Date:** October 21, 2025
-**React Version:** 18+
-**TypeScript Version:** 5+
+For questions or issues, refer to the original Bubble app implementation or contact the development team.

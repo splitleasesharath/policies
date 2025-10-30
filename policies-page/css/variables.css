@@ -1,0 +1,80 @@
+/* CSS Variables for Policies Page */
+
+:root {
+  /* Fonts */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-secondary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Primary Colors */
+  --purple-dark: #2E1A47;
+  --purple-main: #4A2B6B;
+  --purple-light: #6B4B8C;
+
+  /* Accent Colors */
+  --red-emergency: #EF4444;
+  --blue-action: #6366F1;
+  --white: #FFFFFF;
+
+  /* Neutral Colors */
+  --gray-50: #F8F9FA;
+  --gray-100: #E6E6E6;
+  --gray-200: #DEDEDE;
+  --gray-400: #9CA3AF;
+  --gray-600: #6B7280;
+  --gray-700: #4D4D4D;
+  --gray-800: #868E96;
+  --gray-900: #000000;
+
+  /* Text Colors */
+  --text-primary: #000000;
+  --text-secondary: #6B7280;
+  --text-light: rgba(255, 255, 255, 0.8);
+  --text-sidebar: #868E96;
+
+  /* Layout Measurements */
+  --header-height: 70px;
+  --container-width: 70%;
+  --sidebar-width: 25%;
+  --content-width: 70%;
+  --footer-height: auto;
+
+  /* Spacing Scale */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 60px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  :root {
+    --container-width: 85%;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --container-width: 95%;
+    --sidebar-width: 100%;
+    --content-width: 100%;
+  }
+}

@@ -1,0 +1,102 @@
+/* Component Styles for Policies Page */
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.nav-item {
+  font-family: var(--font-primary);
+  font-size: 18px;
+  color: var(--text-sidebar);
+  letter-spacing: -1px;
+  line-height: 1.4;
+  padding: 12.5px 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-slow);
+  border-bottom: 1px solid transparent;
+}
+
+.nav-item:hover {
+  color: var(--purple-main);
+}
+
+.nav-item.active {
+  color: var(--purple-main);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--purple-main);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 40px auto;
+  padding: var(--space-lg);
+  transition: transform var(--transition-medium);
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px);
+}
+
+.back-to-top i {
+  font-size: 24px;
+  color: var(--purple-main);
+}
+
+/* Note: Footer styles are now in css/footer.css */
+
+/* Loading States */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 18px;
+  color: var(--gray-600);
+}
+
+/* Error States */
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 18px;
+  color: var(--red-emergency);
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}

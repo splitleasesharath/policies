@@ -13,6 +13,7 @@ The integration is **already complete**! Here's what's been set up:
 - ✅ Async data loading implemented
 - ✅ Error handling added
 - ✅ Caching strategy in place
+- ✅ **Row Level Security (RLS) enabled with public read access**
 
 ---
 
@@ -108,21 +109,27 @@ INSERT INTO zat_policiesdocuments (
 
 ---
 
-## 🔐 Security Setup (Optional but Recommended)
+## 🔐 Security Setup
 
-Enable Row Level Security:
+**Already configured!** ✅
+
+Row Level Security (RLS) has been enabled with the following policy:
 
 ```sql
--- Enable RLS
-ALTER TABLE zat_policiesdocuments ENABLE ROW LEVEL SECURITY;
+-- ✅ ALREADY APPLIED - No action needed!
+-- This policy allows public users to read active policies
 
--- Allow public to read active policies
 CREATE POLICY "Public read active policies"
 ON zat_policiesdocuments
 FOR SELECT
 TO anon
 USING (Active = true AND "visible on logged out?" = true);
 ```
+
+**What this means:**
+- Public users can only see policies where `Active = true` AND `visible on logged out? = true`
+- Policies with `visible on logged out? = false` are hidden from public (require authentication)
+- All other operations (INSERT, UPDATE, DELETE) require authentication
 
 ---
 

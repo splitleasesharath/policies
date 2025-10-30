@@ -136,6 +136,9 @@ class PoliciesPage {
     // Update download link
     if (this.downloadLink) {
       this.downloadLink.href = policy.pdfUrl;
+      // Set the download filename based on the policy name
+      const filename = `${policy.slug}.pdf`;
+      this.downloadLink.setAttribute('download', filename);
     }
 
     // Update active state in sidebar
